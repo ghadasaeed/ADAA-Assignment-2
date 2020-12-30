@@ -78,7 +78,6 @@ int main(int argc, char *argv[])
         auto end = chrono::system_clock::now();
         chrono::duration<double> duration = end - start;
         cout << "Duration: " << duration.count() << "s\n";
-        findASCII(emails[0]);
     }
 
     system("PAUSE");
