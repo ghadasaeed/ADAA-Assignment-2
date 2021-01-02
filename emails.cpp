@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <chrono>
 
 using namespace std;
@@ -20,8 +21,6 @@ static const char pool2[] =
 
 static const string pool4[3] = {"com" ,"net" ,"org"};
 
-string* emails = NULL;
-
 //the size of the array
 int poolSize = sizeof(pool)-1;
 int pool2Size = sizeof(pool2)-1;
@@ -39,20 +38,22 @@ string getRandomChar4()
 
 int main(int argc, char *argv[])
 {
-    emails = new string [500000];
-    while(true)
-    {
-        int passLength = 5;
-        int numberOfEmails;
-        srand (time(0));  // Init random number generator.
-        string pass;
-        string pass2;
-        string pass3;
-        string pass4;
-       
-        cout << "How many Emails you want ? ";
-        cin >> numberOfEmails;
+    ofstream file ("email.txt");
+    int numberOfEmails;
 
+    int passLength = 5;
+    
+    srand (time(0));  // Init random number generator.
+    string pass;
+    string pass2;
+    string pass3;
+    string pass4;
+    
+    cout << "How many Emails you want ? ";
+    cin >> numberOfEmails;
+    if(!file.is_open()){
+        cout << "File not found.";
+    } else {
         auto start = chrono::system_clock::now();
 
         for (int j = 0; j<numberOfEmails;j++)
@@ -64,23 +65,18 @@ int main(int argc, char *argv[])
                 pass3 += getRandomChar(pool3 , pool3Size);
             }
             pass4 += getRandomChar4();
-            emails[j] = pass + "." + pass3 + "@" + pass2 + "." +pass4;
+            file << pass + "." + pass3 + "@" + pass2 + "." +pass4 << endl;
             
             pass = "";// to empty for the next one
             pass2 = "";
             pass3 = "";
             pass4 = "";
         }
-
-        for(int i = 0; i < numberOfEmails; i++){
-            cout << emails[i] << endl;
-        }
         auto end = chrono::system_clock::now();
         chrono::duration<double> duration = end - start;
         cout << "Duration: " << duration.count() << "s\n";
+        file.close();
     }
-
     system("PAUSE");
-    delete[] emails;
     return EXIT_SUCCESS;
 }

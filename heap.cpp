@@ -1,90 +1,102 @@
 #include <iostream>
-#include <cmath> //used to compute log(x)
-#include "priority_queue.hpp"
+#include <fstream>
+#include <vector>
+using namespace std;
 
-PriorityQueue::PriorityQueue(unsigned int capacity) {
-	capacity_ = capacity;
-	size_ = 0;
-	heap_ = new DataType[capacity_+1];
-	for(int i = 0; i < capacity_; i++) heap_[i] = NULL; //initialize heap_
+string A[100] = {};
+
+template <typename T>
+void printArray (T A[], int n) {
+  for (int i = 0; i < 10; i++)
+    cout << A[i] << " ";
+  cout << endl;
 }
-  // Destructor of the class PriorityQueue. It deallocates the memory space 
-  // allocated for the priority queue. 
-PriorityQueue::~PriorityQueue() {
-	delete [] heap_;
-}
-// Returns the number of elements in the priority queue.
-unsigned int PriorityQueue::size() const {
-	return size_;
-}
-// Returns true if the priority queue is empty, and false otherwise.
-bool PriorityQueue::empty() const {
-	return !size_;
-}
- // Returns true if the priority queue is full, and false otherwise.
-bool PriorityQueue::full() const {
-	return (size_ == capacity_);
-}
-int log2(int val) { //helper function to decide when new level needs to be made
-	return log(val) / log(2);
+
+template <typename T>
+class PriorityQueue {
+  vector<T> A;
+
+  void heapify_enqueue (int index) {   // used in enqueue.
+    if (index == 0)                    // if already at root.
+      return;
+    
+    int parent_index = (index-1)/2;
+	if(A[index].compare(A[parent_index])>0)
+		swap(A[index], A[parent_index]);
+		heapify_enqueue(parent_index);
+
+  }
+    
+  void heapify_dequeue (int index) {   // used in dequeue.
+    int max;                           // max index
+    int left = 2*index+1;
+    int right = 2*index+2;
+    if(left < A.size() && A[left].compare(A[index])>0)
+      max = left;
+    else
+      max = index;
+
+    if(right < A.size() && A[right].compare(A[max])>0)
+      max = right;
+
+    if (max != index) {
+      swap (A[index], A[max]);
+      heapify_dequeue (max);
+    }
+  }
+  
+ public:
+  void enqueue (T element) {
+    A.push_back (element);
+    heapify_enqueue (A.size()-1);  // start at last element.
+  }
+  
+  T dequeue() {
+    T removed_element = A[0];
+    A[0] = A[A.size()-1];          // copy last element to root.
+    A.pop_back();                  // remove last element.
+    heapify_dequeue (0);           // start at root.
+    return removed_element;
+  }
+  
+  int size() {
+    return A.size();
+  }
+
+  void print() {
+    for (int i = 0; i < A.size(); i++)
+      cout << A[i] << " ";
+    cout << endl;
+  }  
 };
-// Prints the contents of the priority queue.
-void PriorityQueue::print() const {
-	double level = 0.0;
-	std::cout << "Ordered Priority Queue:\n";
-	for(int i = 1; i < size_+1; i++) { 
-		//adds a break to the tree to maintain binary heap structure albiet floating left
-		if(log2(i)>=level + 1) { 
-			level++;
-			std::cout << std::endl;
-		}
-		std::cout << heap_[i] << " ";
-	}
-}
- // Returns the max element of the priority queue, but does not remove it.
-PriorityQueue::DataType PriorityQueue::max() const {
-	return heap_[1];
-}
- // Inserts value into the priority queue. Returns true if successful, and 
- // false otherwise. Assume no duplicate entries will be entered.
-bool PriorityQueue::enqueue(DataType val) {
-	if(full()) return false; //full queue
-	heap_[++size_] = val;
-	int index = size_;
-	while(heap_[index].compare(heap_[index/2]) > 0 && index/2 != 0) { //loop while inserted node greater than heap parent, &&: stop if reached heap[0]
-		DataType temp = heap_[index]; //if true, swap inserted node & parent
-		heap_[index] = heap_[index/2];
-		heap_[index/2] = temp;
-		index = index/2; //set new parent index
-	}
-	return true;
-}
- // Removes the top element with the maximum value (priority) and rearranges 
- // the resulting heap. Returns true if successful, and false otherwise.
-bool PriorityQueue::dequeue() {
-	if(empty()) return false; // you can't "dequeue" an empty queue...
-	else {
-		heap_[1] = heap_[size_]; //replace highest priority with bottom-right most leaf in heap (newNode)
-		size_--;
-		int index = 1; //initialize index value to point to node we just inserted into highest priority position (newNode)
-		int larger_child; //variable to fill with index of largest child of node (to trickle it down)
-		//while not a leaf node AND newNode is less than one of its children, bubble newNode down
-		while (2*index < size_ && (heap_[index].compare(heap_[2*index]) < 0 || heap_[index].compare(heap_[2*index + 1]) < 0)) {
-			//if/else: set larger_child to right or left of newNode
-			if (heap_[2*index].compare(heap_[2*index+1]) > 0) 
-                larger_child = 2*index; 
-			else 
-                larger_child = 2*index+1;
-			//Swap values with newNode and larger child
-			DataType temp = heap_[index]; 
-			heap_[index] = heap_[larger_child];
-			heap_[larger_child] = temp;
-			index = larger_child;
-		}
-		return true;
-	}
 
-    void printHeap(){
-        
-    }	 
+int main () {
+  ifstream file("email.txt");
+  if(file.is_open()){
+        cout << "File not found.";
+  } 
+  int i = 0;
+  string email;
+  while(getline(file,email)){
+    A[i] = email;
+	i++;
+  }
+  file.close();
+  int n = sizeof(A)/sizeof(A[0]);
+  cout << "Array = ";
+  printArray (A, 7);
+  
+  cout << "\nEnqueue\t: PriorityQueue\n";
+  PriorityQueue<string> pq;
+  for (int i = 0; i < 7; i++) {
+    cout << A[i] << "\t: ";
+    pq.enqueue (A[i]);
+    pq.print();
+  }
+  
+  cout << "\nDequeue\t: PriorityQueue\n";
+  for (int i = 0; i < 7; i++) {    
+    cout << pq.dequeue() << "\t: ";
+    pq.print();
+  }
 }
