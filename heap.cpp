@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <chrono>
+#include <cstdlib>
 using namespace std;
 
 string A[100] = {};
@@ -88,15 +90,23 @@ int main () {
   
   cout << "\nEnqueue\t: PriorityQueue\n";
   PriorityQueue<string> pq;
+  auto start = chrono::system_clock::now();
   for (int i = 0; i < 7; i++) {
     cout << A[i] << "\t: ";
     pq.enqueue (A[i]);
     pq.print();
   }
+  auto end = chrono::system_clock::now();
+  chrono::duration<double> duration = end - start;
+  cout << "Time to enqueue: " << duration.count() << "s\n";
   
   cout << "\nDequeue\t: PriorityQueue\n";
-  for (int i = 0; i < 7; i++) {    
+  auto start2 = chrono::system_clock::now();
+  for (int i = 0; i < 0.1*n; i++) {    
     cout << pq.dequeue() << "\t: ";
     pq.print();
   }
+  auto end2 = chrono::system_clock::now();
+  chrono::duration<double> duration2 = end2 - start2;
+  cout << "Time to dequeue 10% of the data: " << duration.count() << "s\n";
 }
