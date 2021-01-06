@@ -6,6 +6,8 @@
 #include <cstdlib>
 using namespace std; 
 
+
+
 // An AVL tree node 
 class Node 
 { 
@@ -37,7 +39,7 @@ string max(string a, string b)
 /* Helper function that allocates a 
 new node with the given key and 
 NULL left and right pointers. */
-Node* newNode(const char* key) 
+Node* newNode(string key) 
 { 
 	Node* node = new Node(); 
 	node->key = key; 
@@ -103,15 +105,15 @@ int getBalance(Node *N)
 // Recursive function to insert a key 
 // in the subtree rooted with node and 
 // returns the new root of the subtree. 
-Node* insert(Node* node,const char* key) 
+Node* insert(Node* node,string key) 
 { 
 	/* 1. Perform the normal BST insertion */
 	if (node == NULL) 
 		return(newNode(key)); 
 
-	if (key < node->key) 
+	if ((node->key).compare(key)>0) 
 		node->left = insert(node->left, key); 
-	else if (key > node->key) 
+	else if (key.compare(node->key)>0) 
 		node->right = insert(node->right, key); 
 	else // Equal keys are not allowed in BST 
 		return node; 
@@ -129,22 +131,22 @@ Node* insert(Node* node,const char* key)
 	// there are 4 cases 
 
 	// Left Left Case 
-	if (balance > 1 && key < node->left->key) 
+	if (balance > 1 && (node->left->key).compare(key)>0) 
 		return rightRotate(node); 
 
 	// Right Right Case 
-	if (balance < -1 && key > node->right->key) 
+	if (balance < -1 && key.compare(node->right->key)>0) 
 		return leftRotate(node); 
 
 	// Left Right Case 
-	if (balance > 1 && key > node->left->key) 
+	if (balance > 1 && key.compare(node->left->key)>0) 
 	{ 
 		node->left = leftRotate(node->left); 
 		return rightRotate(node); 
 	} 
 
 	// Right Left Case 
-	if (balance < -1 && key < node->right->key) 
+	if (balance < -1 && (node->right->key).compare(key)>0) 
 	{ 
 		node->right = rightRotate(node->right); 
 		return leftRotate(node); 
@@ -184,30 +186,39 @@ void inOrder(Node *root)
 int main() 
 { 
 	Node *root = NULL; 
-/*	
-odjHs.o1dMx@ALTxm.org
-HQfIs.64cZT@JNnfv.net
-vjR5c.bN1sw@kIvDl.org
-gw6yS.x9r8T@QJseg.org
-b5YaD.FKl5c@PyJbO.net
-NCjhI.aizi8@UBhpR.com
-Go51Y.r2jA3@vOLfO.org
-4KRWL.dJA20@SnHPI.net
-edgJL.5RAJt@PYDHa.com
-th2Ig.AH0iA@MeVmA.com
-*/
-	root = insert(root, "odjHs.o1dMx@ALTxm.org"); 
-	root = insert(root, "HQfIs.64cZT@JNnfv.net"); 
-	root = insert(root, "vjR5c.bN1sw@kIvDl.org");
-	root = insert(root, "gw6yS.x9r8T@QJseg.org"); 
-	root = insert(root, "b5YaD.FKl5c@PyJbO.net"); 
-	root = insert(root, "NCjhI.aizi8@UBhpR.com"); 
-	
-	
+
+	string A[100] = {};
+
+	ifstream file("emailsSetA.txt");
+  if(!file.is_open()){
+        cout << "File not found.";
+  } 
+  int i = 0;
+  string email;
+  while(getline(file,email)){
+    A[i] = email;
+	i++;
+  }
+  file.close();
+
+  int size = 100;
+
+auto start = chrono::system_clock::now();
+	for(int i =0 ; i < size ; i++ )
+	{
+	root = insert(root,A[i]);
+	}
 	
 	cout << "InOrder traversal of the "
 			"constructed AVL tree is \n"; 
-	inOrder(root); 
+	inOrder(root);  
+	cout << endl;
+auto end = chrono::system_clock::now();
+chrono::duration<double> duration = end - start;
+cout << "Time to insert: " << duration.count() << "s\n";
+
+
+	 
 	
 	return 0; 
 } 
