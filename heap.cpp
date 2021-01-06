@@ -5,7 +5,7 @@
 #include <cstdlib>
 using namespace std;
 
-string A[100] = {};
+string A[500000] = {};
 
 template <typename T>
 void printArray (T A[], int n) {
@@ -74,7 +74,7 @@ class PriorityQueue {
 
 int main () {
   ifstream file("email.txt");
-  if(file.is_open()){
+  if(!file.is_open()){
         cout << "File not found.";
   } 
   int i = 0;
@@ -85,16 +85,16 @@ int main () {
   }
   file.close();
   int n = sizeof(A)/sizeof(A[0]);
-  cout << "Array = ";
-  printArray (A, 7);
+  cout << "Array = " << n << "\n";
+  //printArray (A, 7);
   
   cout << "\nEnqueue\t: PriorityQueue\n";
   PriorityQueue<string> pq;
   auto start = chrono::system_clock::now();
-  for (int i = 0; i < 7; i++) {
-    cout << A[i] << "\t: ";
+  for (int i = 0; i < 500000; i++) {
+    //cout << A[i] << "\t: ";
     pq.enqueue (A[i]);
-    pq.print();
+    //pq.print();
   }
   auto end = chrono::system_clock::now();
   chrono::duration<double> duration = end - start;
@@ -102,11 +102,12 @@ int main () {
   
   cout << "\nDequeue\t: PriorityQueue\n";
   auto start2 = chrono::system_clock::now();
-  for (int i = 0; i < 0.1*n; i++) {    
-    cout << pq.dequeue() << "\t: ";
-    pq.print();
+  for (int i = 0; i < (n*0.9); i++) {   
+    pq.dequeue(); 
+    //cout << pq.dequeue() << "\t: ";
+    //pq.print();
   }
   auto end2 = chrono::system_clock::now();
   chrono::duration<double> duration2 = end2 - start2;
-  cout << "Time to dequeue 10% of the data: " << duration.count() << "s\n";
+  cout << "Time to dequeue 10% of the data: " << duration2.count() << "s\n";
 }
