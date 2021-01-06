@@ -182,13 +182,14 @@ void inOrder(Node *root)
     }  
 }  
 
+string* emails = NULL;
 // Driver Code 
 int main() 
 { 
 	Node *root = NULL; 
 
-	string A[100] = {};
-
+	 emails = new string [100];
+	 int size = 100;
 	ifstream file("emailsSetA.txt");
   if(!file.is_open()){
         cout << "File not found.";
@@ -196,17 +197,17 @@ int main()
   int i = 0;
   string email;
   while(getline(file,email)){
-    A[i] = email;
+    emails[i] = email;
 	i++;
   }
   file.close();
 
-  int size = 100;
+ 
 
 auto start = chrono::system_clock::now();
 	for(int i =0 ; i < size ; i++ )
 	{
-	root = insert(root,A[i]);
+	root = insert(root,emails[i]);
 	}
 	
 	cout << "InOrder traversal of the "
@@ -217,9 +218,10 @@ auto end = chrono::system_clock::now();
 chrono::duration<double> duration = end - start;
 cout << "Time to insert: " << duration.count() << "s\n";
 
-
 	 
-	
-	return 0; 
+	system("PAUSE");
+	delete[] emails;
+	return EXIT_SUCCESS;
+
 } 
 
