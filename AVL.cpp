@@ -228,15 +228,16 @@ int main()
 	cout << "InOrder traversal of the "
                 "constructed AVL tree is \n";
         inOrder(root);
-        cout << endl;
+        cout << endl<<endl;
 	*/
+	
 
 	/*
-	// to print the tree as InOrder
-	 cout << "InOrder traversal of the "
+	// to print the tree as preOrder
+	 cout << "preOrder traversal of the "
                 "constructed AVL tree is \n";
         preOrder(root);
-        cout << endl;
+        cout << endl<<endl;
     */
 
     // emails for search
@@ -259,25 +260,24 @@ int main()
         j++;
     }
     file2.close();
-
+   
     auto start2 = chrono::system_clock::now();
         for(int i =0 ; i < size2 ; i++ )
         {
         Search(root, emailsToSearch[i],found);
-
+			
             if (found)
             {
-
-                cout << "\nemail is found. " << endl;
-
+                cout << "found. " ;
             }
             else{
-                cout << "\n email not found." << endl;
-                }
+                cout << " not_found." ;
+                } 
         }
+		cout << endl;
     auto end2 = chrono::system_clock::now();
     chrono::duration<double> duration2 = end2 - start2;
-    cout << "Time for the search is: " << duration2.count() << "s\n";
+    cout << "Time for the search is (Found): " << duration2.count() << "s\n";
 
     // to search emails from the file (not found)
 	ifstream file3("emailNotFound.txt");
@@ -297,20 +297,19 @@ int main()
         for(int i =0 ; i < size2 ; i++ )
         {
         Search(root, emailsToSearch[i],found);
-
+			
             if (found)
             {
-
-                cout << "\nemail is found: " << emailsToSearch[i]<< endl;
-
+                cout << " found ";
             }
             else{
-                cout << "\n email not found." << endl;
-                }
+                cout << " not_found " ;
+                } 
         }
+		cout << endl;
     auto end3 = chrono::system_clock::now();
     chrono::duration<double> duration3 = end3 - start3;
-    cout << "Time for the search is: " << duration3.count() << "s\n";
+    cout << "Time for the search is(not found): " << duration3.count() << "s\n";
 	cout << endl;
 
 	system("PAUSE");
