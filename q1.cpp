@@ -240,7 +240,10 @@ int main(){
              << '\t' << "Profit"<< '\n';
     */
     for(int u = 0; u < arr_size;u++){
-        values[u] =  round(profit[u]/weight[u]);
+        if(weight[u] != 0)
+            values[u] =  round(profit[u]/weight[u]);
+        else
+            values[u] = 0; 
     }
     //map for planets and its profit
     map<int, string> plavalue;
