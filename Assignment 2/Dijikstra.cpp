@@ -36,19 +36,19 @@ void printPath(int parent[], int j)
         return;
  
     printPath(parent, parent[j]);
- 
-    printf("%d ", j);
+    cout << "-->";
+    printf("%c", char(65 + j));
 }
  
 // A utility function to print the constructed distance
 // array
 int printSolution(int dist[], int n, int parent[])
 {
-    int src = 0;
+    char src = 'A';
     printf("Vertex\t  Distance\tPath");
     for (int i = 1; i < V; i++)
     {
-        printf("\n%d -> %d \t %d\t\t %d ", src, i, dist[i], src);
+        printf("\n%c -> %c \t %d\t\t %c", src, char(65 + i), dist[i], src);
         printPath(parent, i);
     }
 }

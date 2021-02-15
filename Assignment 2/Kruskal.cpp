@@ -16,7 +16,7 @@ int minKey(int key[], bool mstSet[])
     int min = INT_MAX, min_index;  
   
     for (int v = 0; v < V; v++)  
-        if (mstSet[v] == false && key[v] < min)  
+        if (mstSet[v] == false && key[v] < min)
             min = key[v], min_index = v;  
   
     return min_index;  
@@ -27,8 +27,38 @@ int minKey(int key[], bool mstSet[])
 void printMST(int parent[], int graph[V][V])  
 {  
     cout<<"Edge \tWeight\n";  
-    for (int i = 1; i < V; i++)  
-        cout<<parent[i]<<" - "<<i<<" \t"<<graph[i][parent[i]]<<" \n";  
+    for (int i = 1; i < V; i++){
+        cout<<char(65 + parent[i])<<"-->"<<char(65 + i)<<" \t"<<graph[i][parent[i]]<<" \n";  
+    }
+    string list[10][4]= {
+        {"D", "F", "END", ""},
+        {"D", "E", "G", "END"},
+        {"I" , "END", "", ""},
+        {"A", "B" , "END", ""},
+        {"B", "END", "", ""},
+        {"A", "END", "", ""},
+        {"I", "END" ,""},
+        {"I", "J" ,"END", ""},
+        {"C", "G" ,"H", "END"},
+        {"H", "END" ,"", ""},
+    };
+    
+    int size;
+    //display adjacency list
+    cout << "\nAdjacency List:\n";
+    for(int i = 0 ; i < 10 ; i++){
+        cout << char (65 + i)<< " --> ";
+        size = sizeof(list[i]) / sizeof(list[i][0]);
+        for(int j = 0 ; j < size; j++){
+            cout <<  list[i][j] ;
+            if(list[i][j + 1] == "END" || j == 3){
+                break;
+            } else {
+                cout << " --> ";
+            }
+        }
+        cout << "\n";
+    }   
 }  
   
 // Function to construct and print MST for  
