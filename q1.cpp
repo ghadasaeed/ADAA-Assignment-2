@@ -105,24 +105,24 @@ int main(){
     string enames[18] = {"AD","AJ","AH","AF","DJ","JH","HF","DB","JG","HI","FC","BG","GI","IC","BE","GE","IE","CE"};
 
     //calculate edge weight/distance 
-    edges[0] = sqrt(pow(x[3]-x[0],2)+pow(y[3]-y[0],2)+pow(z[3]-z[0],2));
-    edges[1] = sqrt(pow(x[9]-x[0],2)+pow(y[9]-y[0],2)+pow(z[9]-z[0],2));
-    edges[2] = sqrt(pow(x[7]-x[0],2)+pow(y[7]-y[0],2)+pow(z[7]-z[0],2));
-    edges[3] = sqrt(pow(x[5]-x[0],2)+pow(y[5]-y[0],2)+pow(z[5]-z[0],2));
-    edges[4] = sqrt(pow(x[9]-x[3],2)+pow(y[9]-y[3],2)+pow(z[9]-z[3],2));
-    edges[5] = sqrt(pow(x[7]-x[9],2)+pow(y[7]-y[9],2)+pow(z[7]-z[9],2));
-    edges[6] = sqrt(pow(x[5]-x[7],2)+pow(y[5]-y[7],2)+pow(z[5]-z[7],2));
-    edges[7] = sqrt(pow(x[1]-x[3],2)+pow(y[1]-y[3],2)+pow(z[1]-z[3],2));
-    edges[8] = sqrt(pow(x[6]-x[9],2)+pow(y[6]-y[9],2)+pow(z[6]-z[9],2));
-    edges[9] = sqrt(pow(x[8]-x[7],2)+pow(y[8]-y[7],2)+pow(z[8]-z[7],2));
-    edges[10] = sqrt(pow(x[2]-x[5],2)+pow(y[2]-y[5],2)+pow(z[2]-z[5],2));
-    edges[11] = sqrt(pow(x[6]-x[1],2)+pow(y[6]-y[1],2)+pow(z[6]-z[1],2));
-    edges[12] = sqrt(pow(x[8]-x[6],2)+pow(y[8]-y[6],2)+pow(z[8]-z[6],2));
-    edges[13] = sqrt(pow(x[2]-x[8],2)+pow(y[2]-y[8],2)+pow(z[2]-z[8],2));
-    edges[14] = sqrt(pow(x[4]-x[1],2)+pow(y[4]-y[1],2)+pow(z[4]-z[1],2));
-    edges[15] = sqrt(pow(x[4]-x[6],2)+pow(y[4]-y[6],2)+pow(z[4]-z[6],2));
-    edges[16] = sqrt(pow(x[4]-x[8],2)+pow(y[4]-y[8],2)+pow(z[4]-z[8],2));
-    edges[17] = sqrt(pow(x[4]-x[2],2)+pow(y[4]-y[2],2)+pow(z[4]-z[2],2));
+    edges[0] = round(sqrt(pow(x[3]-x[0],2)+pow(y[3]-y[0],2)+pow(z[3]-z[0],2)));
+    edges[1] = round(sqrt(pow(x[9]-x[0],2)+pow(y[9]-y[0],2)+pow(z[9]-z[0],2)));
+    edges[2] = round(sqrt(pow(x[7]-x[0],2)+pow(y[7]-y[0],2)+pow(z[7]-z[0],2)));
+    edges[3] = round(sqrt(pow(x[5]-x[0],2)+pow(y[5]-y[0],2)+pow(z[5]-z[0],2)));
+    edges[4] = round(sqrt(pow(x[9]-x[3],2)+pow(y[9]-y[3],2)+pow(z[9]-z[3],2)));
+    edges[5] = round(sqrt(pow(x[7]-x[9],2)+pow(y[7]-y[9],2)+pow(z[7]-z[9],2)));
+    edges[6] = round(sqrt(pow(x[5]-x[7],2)+pow(y[5]-y[7],2)+pow(z[5]-z[7],2)));
+    edges[7] = round(sqrt(pow(x[1]-x[3],2)+pow(y[1]-y[3],2)+pow(z[1]-z[3],2)));
+    edges[8] = round(sqrt(pow(x[6]-x[9],2)+pow(y[6]-y[9],2)+pow(z[6]-z[9],2)));
+    edges[9] = round(sqrt(pow(x[8]-x[7],2)+pow(y[8]-y[7],2)+pow(z[8]-z[7],2)));
+    edges[10] = round(sqrt(pow(x[2]-x[5],2)+pow(y[2]-y[5],2)+pow(z[2]-z[5],2)));
+    edges[11] = round(sqrt(pow(x[6]-x[1],2)+pow(y[6]-y[1],2)+pow(z[6]-z[1],2)));
+    edges[12] = round(sqrt(pow(x[8]-x[6],2)+pow(y[8]-y[6],2)+pow(z[8]-z[6],2)));
+    edges[13] = round(sqrt(pow(x[2]-x[8],2)+pow(y[2]-y[8],2)+pow(z[2]-z[8],2)));
+    edges[14] = round(sqrt(pow(x[4]-x[1],2)+pow(y[4]-y[1],2)+pow(z[4]-z[1],2)));
+    edges[15] = round(sqrt(pow(x[4]-x[6],2)+pow(y[4]-y[6],2)+pow(z[4]-z[6],2)));
+    edges[16] = round(sqrt(pow(x[4]-x[8],2)+pow(y[4]-y[8],2)+pow(z[4]-z[8],2)));
+    edges[17] = round(sqrt(pow(x[4]-x[2],2)+pow(y[4]-y[2],2)+pow(z[4]-z[2],2)));
 
 
     //adjacency matrix
@@ -240,7 +240,7 @@ int main(){
              << '\t' << "Profit"<< '\n';
     */
     for(int u = 0; u < arr_size;u++){
-        values[u] =  profit[u]/weight[u];
+        values[u] =  round(profit[u]/weight[u]);
     }
     //map for planets and its profit
     map<int, string> plavalue;
@@ -250,7 +250,8 @@ int main(){
 
     arr_size = sizeof(values) / sizeof(values[0]);
     mergeSort(values,0,arr_size);
-
+    cout << '\t' << "Planet"
+        << '\t' << "Value"<< '\n';
     for(int i = arr_size-1 ; i >= 0; i--){
         ite = plavalue.find(values[i]);
         cout << '\t' << ite->second 
