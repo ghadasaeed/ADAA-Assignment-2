@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <map> 
+#include <vector> 
 
 using namespace std;
 
@@ -178,34 +179,26 @@ int main(){
         cout << "\n";
     }    
 
-    //adjacency list
-    string list[10][4]= {
-        {"D", "F", "H" ,"J"},
-        {"D", "E", "G" , "END"},
-        {"E", "F", "I" , "END"},
-        {"A", "B", "J" , "END"},
-        {"B", "C", "G" ,"I"},
-        {"A", "C", "H" , "END"},
-        {"B", "E", "I" ,"J"},
-        {"A", "F", "I" ,"J"},
-        {"C", "E", "G" ,"H"},
-        {"A", "D", "G" ,"H"},
-    };
+    vector<char> list[10];
+    for(int i = 0; i <10 ; i++){
+        for(int j = i; j < 10; j++){
+            if(matrix[i][j] != 0)
+                list[i].push_back(65+j);
+        }
+    }
+
 
     int size;
     //display adjacency list
     cout << "\nAdjacency List:\n";
+        cout << endl; 
     for(int i = 0 ; i < 10 ; i++){
         cout << char (65 + i)<< " --> ";
         size = sizeof(list[i]) / sizeof(list[i][0]);
-        for(int j = 0 ; j < size; j++){
-            cout <<  list[i][j] ;
-            if(list[i][j + 1] == "END" || j == 3){
-                break;
-            } else {
-                cout << " --> ";
-            }
-        }
+        for (auto it = list[i].begin();it != list[i].end(); it++) { 
+            cout << *it << ' '; 
+        } 
+
         cout << "\n";
     }    
 
