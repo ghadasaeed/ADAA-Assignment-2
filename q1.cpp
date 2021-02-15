@@ -228,10 +228,7 @@ int main(){
 
 
     arr_size = sizeof(profit) / sizeof(profit[0]);
-    /*mergeSort(profit,0,arr_size);
-        cout << '\t' << "Planets"
-             << '\t' << "Profit"<< '\n';
-    */
+
     for(int u = 0; u < arr_size;u++){
         if(weight[u] != 0)
             values[u] =  round(profit[u]/weight[u]);
@@ -246,7 +243,7 @@ int main(){
 
     arr_size = sizeof(values) / sizeof(values[0]);
     mergeSort(values,0,arr_size);
-    cout << '\t' << "Planet"
+    cout << '\t' << "Planet  "
         << '\t' << "Value"<< '\n';
     for(int i = arr_size-1 ; i >= 0; i--){
         ite = plavalue.find(values[i]);
