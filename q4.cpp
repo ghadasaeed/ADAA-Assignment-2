@@ -1,73 +1,75 @@
+#include <bits/stdc++.h> 
+#include<string>
 #include <iostream>
-#include <algorithm>
-#include <iomanip>
+#include <fstream>
+#include <chrono>
+#include <cstdlib>
 using namespace std;
 
 
+void knapsackDyProg(int W[], int V[], int M, int n) {
+
+    int B[n + 1][M + 1]; 
+
+    for (int i=0; i<=n; i++)
+		for (int j=0; j<=M; j++) {
+			B[i][j] = 0;
+		}
+	
+	for (int i = 1; i <= n; i++) {
+		for (int j = 0; j <= M; j++) {
+			B[i][j] = B[i - 1][j];
+			
+			if ((j >= W[i-1]) && (B[i][j] < B[i - 1][j - W[i - 1]] + V[i - 1])) {
+				B[i][j] = B[i - 1][j - W[i - 1]] + V[i - 1]; 
+			}
+			
+			cout << setw(5) << B[i][j] << " ";
+		}
+		cout << endl;
+	}
+	
+	cout << "Max Value:\t" << B[n][M] << endl;
+	
+	cout << "Selected Planets: " << endl;
+	
+	while (n != 0) {
+		if (B[n][M] != B[n - 1][M]) {
+			cout << "\tPlanet " << n-1 << " with Weight = " << W[n - 1] << " and Profit = " << V[n - 1] << endl;
+			
+			M = M - W[n-1];
+		}
+		
+		n--;
+	}
+}
+
 int main()
 {
-    int table[100][100] ;
-    int value, n, max_wt;
-    max_wt = 80;
-    n = 10;
-	int wt[] = {0,
-		10,
-		9,
-		20,
-		5,
-		19,
-		9,
-		20,
-		19,
-		18};
-	
-	
-	int val[] = {0,
-		190,
-		190,
-		80,
-		190,
-		60,
-		130,
-		90,
-		70,
-		120};
+    int item_profit[] = { 0,
+190,
+190,
+80,
+190,
+60,
+130,
+90,
+70,
+120};
+	int item_weight[] = {0,
+10,
+9,
+20,
+5,
+19,
+9,
+20,
+19,
+18};
 
-    // Initialization
-    /*
-    for (int i = 0; i <= n; i++)
-        for (int j = 0; j <= max_wt; j++)
-            table[i][j] = 0;
-    */
+    int capacity = 80;
+    int n =  sizeof(item_profit)/sizeof(*item_profit);
     
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= max_wt; j++)
-            table[i][j] = -1;
-
-    for (int i = 1; i <= n; i++)
-    {
-        for (int j = 1; j <= max_wt; j++)
-        {
-            if (j < wt[i])
-                table[i][j] = table[i - 1][j];
-            else
-                table[i][j] = max(table[i - 1][j], val[i] + table[i - 1][j - wt[i]]);
-        }
-    }
-
-    cout << " Optimum value : " << table[n][max_wt] << endl;
-
-    cout << " \n Table : \n";
-    for (int i = 0; i <= n; i++)
-    {
-        for (int j = 0; j <= max_wt; j++)
-            if (table[i][j] == -1)
-                cout << setw(5) << "-";
-            else
-                cout << setw(5) << table[i][j];
-        cout << endl;
-    }
-
-    system("PAUSE");
-	return EXIT_SUCCESS;
+    knapsackDyProg(item_weight,item_profit,capacity,n);
+    return 0; 
 }
