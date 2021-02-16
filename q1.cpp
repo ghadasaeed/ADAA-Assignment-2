@@ -64,6 +64,61 @@ void merge(int arr[], int l, int m, int r)
         k++;
     }
 }
+
+
+void dmerge(int arr[], int l, int m, int r)
+{
+    int n1 = m - l + 1;
+    int n2 = r - m;
+ 
+
+    int L[n1], R[n2];
+ 
+
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+ 
+    // Merge the temp arrays back into arr[l..r]
+
+    // Initial index of first subarray
+    int i = 0;
+ 
+    // Initial index of second subarray
+    int j = 0;
+ 
+    // Initial index of merged subarray
+    int k = l;
+ 
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = R[j];
+            j++;
+        }
+        else {
+            arr[k] = L[i];
+            i++;
+        }
+        k++;
+    }
+ 
+    // Copy the remaining elements of
+    // L[], if there are any
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+ 
+    // Copy the remaining elements of
+    // R[], if there are any
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
  
 // l is for left index and r is
 // right index of the sub-array
@@ -77,6 +132,17 @@ void mergeSort(int arr[],int l,int r){
     mergeSort(arr,m+1,r);
     merge(arr,l,m,r);
 }
+
+void dmergeSort(int arr[],int l,int r){
+    if(l>=r){
+        return;//returns recursively
+    }
+    int m =l+ (r-l)/2;
+    dmergeSort(arr,l,m);
+    dmergeSort(arr,m+1,r);
+    dmerge(arr,l,m,r);
+}
+
 
 int main(){
 
@@ -103,7 +169,7 @@ int main(){
 
     
     int edges[18];
-    string enames[18] = {"AD","AJ","AH","AF","DJ","JH","HF","DB","JG","HI","FC","BG","GI","IC","BE","GE","IE","CE"};
+    string enames[18] = {"AD","AJ","AH","AF","DJ","HJ","FH","BD","GJ","HI","CF","BG","GI","CI","BE","EG","EI","CE"};
 
     //calculate edge weight/distance 
     edges[0] = round(sqrt(pow(x[3]-x[0],2)+pow(y[3]-y[0],2)+pow(z[3]-z[0],2)));
@@ -191,7 +257,7 @@ int main(){
     int size;
     //display adjacency list
     cout << "\nAdjacency List:\n";
-        cout << endl; 
+
     for(int i = 0 ; i < 10 ; i++){
         cout << char (65 + i)<< " --> ";
         size = sizeof(list[i]) / sizeof(list[i][0]);
@@ -209,12 +275,11 @@ int main(){
     }
     //iterator for map
     map< int,string>::iterator ite;
-
-
+    
     //merge sort for List of edges in ascending order of distance
     cout << "\nList of edges in ascending order of distance:\n";
     int arr_size = sizeof(edges) / sizeof(edges[0]);
-    mergeSort(edges,0,arr_size);
+    mergeSort(edges,0,arr_size-1);
         cout << '\t' << "Edge"
              << '\t' << "Distance"<< '\n';
     for(int i = 0; i < arr_size ; i++){
@@ -229,28 +294,35 @@ int main(){
 
     arr_size = sizeof(profit) / sizeof(profit[0]);
 
+    int pvalue[10];
     for(int u = 0; u < arr_size;u++){
         if(weight[u] != 0)
             values[u] =  round(profit[u]/weight[u]);
         else
             values[u] = 0; 
-    }
-    //map for planets and its profit
-    map<int, string> plavalue;
-    for(int num = 0 ; num < 10 ; num++){
-        plavalue.insert(pair<int,string>(values[num],planets[num]));
+
+        pvalue[u] = values[u];
     }
 
     arr_size = sizeof(values) / sizeof(values[0]);
-    mergeSort(values,0,arr_size);
+    dmergeSort(values,0,arr_size-1);
     cout << '\t' << "Planet  "
         << '\t' << "Value"<< '\n';
-    for(int i = arr_size-1 ; i >= 0; i--){
-        ite = plavalue.find(values[i]);
-        cout << '\t' << ite->second 
-             << '\t' << ite->first<< '\n';
+    int countp;
+    int visited[10] = {0};
+    for(int i = 0; i < arr_size ; ++i){
+        countp = 0;
+        for(int v = 0; v <  arr_size  ; v++){
+            if(values[i] == pvalue[v] && visited[v] == 0){
+                countp = v;
+                visited[v] = 1;
+                break;
+            }
+        }
+        cout << '\t' << planets[countp]
+             << '\t' << values[i] << '\n';
     }
-    
+
 
 };
 
