@@ -247,7 +247,7 @@ int main(){
 
     vector<char> list[10];
     for(int i = 0; i <10 ; i++){
-        for(int j = i; j < 10; j++){
+        for(int j = 0; j < 10; j++){
             if(matrix[i][j] != 0)
                 list[i].push_back(65+j);
         }
